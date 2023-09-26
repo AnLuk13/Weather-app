@@ -1,0 +1,11 @@
+.App {
+  height: 100vh;
+  background: url(./assets/nature.jpg);
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+}
+
+div {
+  color: white;
+}
