@@ -1,51 +1,49 @@
-import { useState } from "react";
-import "./Content.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import axios from "axios";
 import React from "react";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import "./Content.css";
 
-function Content() {
+function Content({ handleRouteData, locationGet }) {
   const [data, setData] = useState({});
-  const [location, setLocation] = useState("");
+  // const [location, setLocation] = useState("");
 
-  const url = `https://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=005566f5427f4734936217300aca5730`;
+  const url = `https://api.openweathermap.org/data/2.5/forecast?q=${locationGet}&appid=d9376f1d378c8c6becba5b2b6b855b57`;
 
-  const searchLocation = (event) => {
-    if (event.key === "Enter") {
+  useEffect(() => {
+    if (locationGet !== "") {
       axios.get(url).then((response) => {
         setData(response.data);
-        console.log(data);
+        handleRouteData(response.data);
       });
+    }
+  }, [locationGet]);
+
+  const generateTextContent = () => {
+    if (data.city && data.list) {
+      const textContent = `Location: ${data.city.name}, ${data.city.country}\nTemperature: ${data.list[0].main.temp}°F for ${data.list[0].dt_txt}`;
+      return textContent;
+    }
+    return "";
+  };
+
+  const handleDownload = () => {
+    const textContent = generateTextContent();
+    if (textContent) {
+      const blob = new Blob([textContent], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "current-weather.txt";
+      a.click();
+      URL.revokeObjectURL(url);
     }
   };
 
   return (
-    <div className="main-container">
-      <div className="search-box">
-        <input
-          className="search"
-          value={location}
-          onChange={(event) => setLocation(event.target.value)}
-          placeholder="Enter a city..."
-          type="text"
-          onKeyDown={searchLocation}
-        />
-      </div>
+    <div className="wheather-container">
       <div className="top">
         <div className="location">
-          {data.city ? (
-            data.city.name
-          ) : (
-            <h1
-              style={{
-                textAlign: "center",
-                fontWeight: "700",
-                fontSize: "3rem",
-              }}
-            >
-              No city
-            </h1>
-          )}
+          {data.city ? data.city.name : <h1>No city</h1>}
         </div>
         <div className="city">{data.city ? data.city.country : null}</div>
         <div className="temp">
@@ -76,53 +74,12 @@ function Content() {
           <p>{data.list ? "Wind" : null}</p>
         </div>
       </div>
-      <div className="cards">
-        {data.list
-          ? (() => {
-              const groupedData = {};
-
-              data.list.forEach((dataItem) => {
-                const dateTime = dataItem.dt_txt.split(" ");
-                const date = dateTime[0].split("-");
-                const itemDate = new Date(date[0], date[1] - 1, date[2]);
-                const currentDate = new Date();
-                const dayDiff = Math.floor(
-                  (itemDate - currentDate) / (1000 * 60 * 60 * 24)
-                );
-
-                if (!groupedData[dayDiff]) {
-                  groupedData[dayDiff] = [];
-                }
-
-                groupedData[dayDiff].push(
-                  <div className="card">
-                    {`For ${dateTime[0]}, time: ${dateTime[1]} the estimated temperature is - ${dataItem.main.temp}°F`}
-                  </div>
-                );
-              });
-
-              const sortedKeys = Object.keys(groupedData).sort((a, b) => {
-                if (a === "-1") return -1;
-                if (b === "-1") return 1;
-                return a - b;
-              });
-
-              return sortedKeys.map((dayDiff) => (
-                <div className="group">
-                  <h2>
-                    {dayDiff === "-1"
-                      ? "Current"
-                      : dayDiff === "0"
-                      ? "Tomorrow"
-                      : dayDiff === "1"
-                      ? "In two days"
-                      : `+${dayDiff} days`}
-                  </h2>
-                  {groupedData[dayDiff]}
-                </div>
-              ));
-            })()
-          : null}
+      <div className="download-box">
+        {data.list ? (
+          <button className="donwload-button" onClick={handleDownload}>
+            Download Weather
+          </button>
+        ) : null}
       </div>
     </div>
   );
