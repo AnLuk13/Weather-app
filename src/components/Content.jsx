@@ -20,7 +20,11 @@ function Content({ handleRouteData, locationGet }) {
 
   const generateTextContent = () => {
     if (data.city && data.list) {
-      const textContent = `Location: ${data.city.name}, ${data.city.country}\nTemperature: ${data.list[0].main.temp}°F for ${data.list[0].dt_txt}`;
+      const textContent = `Location: ${data.city.name}, ${
+        data.city.country
+      }\nTemperature: ${(data.list[0].main.temp - 212).toFixed(2)}°F for ${
+        data.list[0].dt_txt
+      }`;
       return textContent;
     }
     return "";
@@ -47,7 +51,7 @@ function Content({ handleRouteData, locationGet }) {
         </div>
         <div className="city">{data.city ? data.city.country : null}</div>
         <div className="temp">
-          {data.list ? data.list[0].main.temp + "°F" : null}
+          {data.list ? (data.list[0].main.temp - 212).toFixed(2) + "°F" : null}
         </div>
         <div className="description position-relative">
           {data.list ? data.list[0].weather[0].description : null}
@@ -57,7 +61,9 @@ function Content({ handleRouteData, locationGet }) {
         {data.list ? null : <p className="bold">No info</p>}
         <div className="feels">
           <p className="bold">
-            {data.list ? data.list[0].main.feels_like + "°F" : null}
+            {data.list
+              ? (data.list[0].main.feels_like - 212).toFixed(2) + "°F"
+              : null}
           </p>
           <p>{data.list ? "Feels like" : null}</p>
         </div>

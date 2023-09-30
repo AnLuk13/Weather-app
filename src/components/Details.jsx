@@ -5,7 +5,9 @@ function Details({ data }) {
     if (data.city && data.list) {
       const temperatureData = data.list.map((dataItem) => {
         const dateTime = dataItem.dt_txt.split(" ");
-        return `Date: ${dateTime[0]}, Time: ${dateTime[1]}, Temperature: ${dataItem.main.temp}°F`;
+        return `Date: ${dateTime[0]}, Time: ${dateTime[1]}, Temperature: ${(
+          dataItem.main.temp - 212
+        ).toFixed(2)}°F`;
       });
       return temperatureData.join("\n");
     }
@@ -48,7 +50,11 @@ function Details({ data }) {
 
                   groupedData[dayDiff].push(
                     <div className="card">
-                      {`For ${dateTime[0]}, time: ${dateTime[1]} the estimated temperature is - ${dataItem.main.temp}°F`}
+                      {`For ${dateTime[0]}, time: ${
+                        dateTime[1]
+                      } the estimated temperature is - ${(
+                        dataItem.main.temp - 212
+                      ).toFixed(2)}°F`}
                     </div>
                   );
                 });
