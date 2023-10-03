@@ -82,7 +82,7 @@ function Content({ handleRouteData, locationGet }) {
       </div>
       <div className="download-box">
         {data.list ? (
-          <button className="donwload-button" onClick={handleDownload}>
+          <button className="download-button" onClick={handleDownload}>
             Download Weather
           </button>
         ) : null}

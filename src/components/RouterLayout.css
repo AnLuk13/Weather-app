@@ -4,14 +4,14 @@
 }
 
 .search {
-  padding: 7px 12px 10px;
+  padding: 7px 18px 9px;
   margin-bottom: 20px;
   width: 300px;
-  background-color: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.47);
+  backdrop-filter: blur(25px);
   color: white;
   font-size: 1.2rem;
   border: none;
-  border-bottom: 1px solid black;
   border-radius: 25px;
 }
 
@@ -63,7 +63,7 @@ h1 {
 }
 
 .active {
-  background-color: rgb(227, 225, 225);
+  background-color: white;
   border-radius: 15px;
   color: black;
 }
