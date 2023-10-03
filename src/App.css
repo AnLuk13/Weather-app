@@ -1,7 +1,7 @@
 .App {
   height: 100%;
   min-height: 100vh;
-  background: url(./assets/sky.png);
+  background: url(./assets/sky.jpg);
   background-size: cover;
   background-attachment: fixed;
   display: flex;
