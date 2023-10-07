@@ -34,7 +34,6 @@ function Details({ data }) {
           {data.list
             ? (() => {
                 const groupedData = {};
-
                 data.list.forEach((dataItem) => {
                   const dateTime = dataItem.dt_txt.split(" ");
                   const date = dateTime[0].split("-");
@@ -49,7 +48,7 @@ function Details({ data }) {
                   }
 
                   groupedData[dayDiff].push(
-                    <div className="card">
+                    <div className="card" key={dataItem.dt}>
                       {`For ${dateTime[0]}, time: ${
                         dateTime[1]
                       } the estimated temperature is - ${(
@@ -65,8 +64,8 @@ function Details({ data }) {
                   return a - b;
                 });
 
-                return sortedKeys.map((dayDiff) => (
-                  <div className="group">
+                return sortedKeys.map((dayDiff, index) => (
+                  <div className="group" key={index}>
                     <h2>
                       {dayDiff === "-1"
                         ? "Current"
